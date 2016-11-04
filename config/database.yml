@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: kitchen_dev
+  pool: 5
+  username: <%= ENV["PG_USER"] %>
+  password: <%= ENV["PG_PASS"] %>
+  host: localhost
+  

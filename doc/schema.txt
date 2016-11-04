@@ -1,0 +1,31 @@
+user
+  id
+  name
+  password
+  creat_time
+
+recipes
+  id
+  name
+  # picture
+  
+ingredients
+  ingredient_name
+  recipe_id
+  amount 
+  unit
+
+steps
+  id
+  recipe_id
+  index  ( in that recipe)
+  string: content
+  # picture 
+
+follows
+  follower_id
+  following_id
+
+favors 
+  user_id
+  recipe_id
