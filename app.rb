@@ -26,13 +26,11 @@ get '/' do
 end
 
 post '/api/v1/users/login' do
-  byebug
   @json = JSON.parse request.body.read
   username = @json["username"]
   password = @json["password"]
   begin
     token = UserUtil::authenticate username, password
-    byebug
     Api::Result.new(true, {access_token: token}).to_json
   rescue Error::AuthError => e
     Api::Result.new(false, e.message).to_json

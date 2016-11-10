@@ -1,4 +1,3 @@
-properties.rb
 
 $TOKEN_HASH = 'HS256'
 $TOKEN_SECRET = ENV['KIP_TOKEN_SECRET']
