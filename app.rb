@@ -2,6 +2,7 @@ require 'sinatra'
 require 'active_record'
 require 'jwt'
 require './config/environments'
+require './config/properties'
 
 require './models/favor'
 require './models/follow'
