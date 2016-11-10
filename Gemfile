@@ -8,3 +8,5 @@ gem "sinatra-activerecord"
 gem "rake", "11.2.2"
 gem "pg"
 gem "jwt"
+
+gem 'byebug'

@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20161103233151) do
 
   create_table "recipes", force: :cascade do |t|
     t.string  "name",        limit: 15, null: false
+    t.integer "user_id",                null: false
     t.integer "create_time", limit: 8,  null: false
   end
 
@@ -57,5 +58,6 @@ ActiveRecord::Schema.define(version: 20161103233151) do
   add_foreign_key "follows", "users", column: "followed_id"
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "ingredients", "recipes"
+  add_foreign_key "recipes", "users"
   add_foreign_key "steps", "recipes"
 end
