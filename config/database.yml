@@ -6,4 +6,12 @@ development:
   username: <%= ENV["PG_USER"] %>
   password: <%= ENV["PG_PASS"] %>
   host: localhost
-  
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: <%= ENV["PG_DATABASE"] %>
+  pool: 5
+  username: <%= ENV["PG_USER"] %>
+  password: <%= ENV["PG_PASS"] %>
+  host: <%= ENV["PG_HOST"] %>
