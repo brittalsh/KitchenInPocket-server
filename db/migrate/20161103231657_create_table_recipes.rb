@@ -1,7 +1,7 @@
 class CreateTableRecipes < ActiveRecord::Migration
   def up
     create_table :recipes do |t|
-      t.string :name, limit: 15, null: false
+      t.string :name, limit: 30, null: false
       t.integer :user_id, null: false
       t.integer :create_time, limit: 8, null: false
     end

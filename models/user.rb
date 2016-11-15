@@ -15,4 +15,14 @@ class User < ActiveRecord::Base
   validates :name, presence: {message: "Please provide your user name."}, uniqueness: {message: "User name already exists."}, length: {in: 5..20, message: "User name length: 5 ~ 20"}
   validates :password, presence: {message: "Please provide your password."}, length: {in: 5..20, message: "Password length: 5 ~ 20"}
 
+  def to_json_obj fields = nil
+    obj = {}
+    default = ["id", "name", "create_time", "intro"]
+    fields ||= default
+    fields.each do |key|
+      obj.store(key, instance_eval("self.#{key}")) if default.include? key
+    end
+    obj
+  end
+
 end

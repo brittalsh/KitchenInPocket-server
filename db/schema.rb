@@ -27,21 +27,21 @@ ActiveRecord::Schema.define(version: 20161103233151) do
   end
 
   create_table "ingredients", force: :cascade do |t|
-    t.string  "name",      limit: 10, null: false
+    t.string  "name",      limit: 20, null: false
     t.integer "recipe_id",            null: false
     t.string  "amount",    limit: 10, null: false
   end
 
   create_table "recipes", force: :cascade do |t|
-    t.string  "name",        limit: 15, null: false
+    t.string  "name",        limit: 30, null: false
     t.integer "user_id",                null: false
     t.integer "create_time", limit: 8,  null: false
   end
 
   create_table "steps", force: :cascade do |t|
-    t.integer "recipe_id",            null: false
-    t.integer "index",                null: false
-    t.string  "content",   limit: 30, null: false
+    t.integer "recipe_id",             null: false
+    t.integer "index",                 null: false
+    t.string  "content",   limit: 100, null: false
   end
 
   create_table "users", force: :cascade do |t|

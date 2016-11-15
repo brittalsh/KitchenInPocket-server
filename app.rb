@@ -14,12 +14,14 @@ require './models/user'
 require './lib/errors'
 require './lib/result'
 require './lib/userutil'
+require './lib/recipeutil'
 
 require 'byebug'
 
 include Error
 include Api
 include UserUtil
+include RecipeUtil
 
 get '/' do
   redirect "test.html"
@@ -48,5 +50,111 @@ post '/api/v1/users' do
     Api::Result.new(true, {access_token: token}).to_json
   rescue Error::SignUpError => e
     Api::Result.new(false, e.message).to_json
+  end
+end
+
+# authentication required
+# parameters: none
+get "/api/v1/users/:id" do
+  user_id = params[:id]
+  token = request.env["HTTP_ACCESS_TOKEN"]
+  begin
+    active_user = UserUtil::check_token token
+    user = UserUtil::find_user_by_id user_id
+    Api::Result.new(true, {user: user.to_json_obj}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: {old_password: "", new_password: "", new_password2: ""}
+put '/api/v1/users/changepassword' do
+  token = request.env["HTTP_ACCESS_TOKEN"]
+  begin
+    active_user = UserUtil::check_token token
+    @json = JSON.parse request.body.read
+    old_password = @json["old_password"]
+    new_password = @json["new_password"]
+    new_password2 = @json["new_password2"]
+    UserUtil::change_password active_user, old_password, new_password, new_password2
+    Api::Result.new(true, "Password changed.").to_json
+  rescue Error::ChangePasswdError => e
+    Api::Result.new(false, e.message).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: none
+get '/api/v1/users/:id/followings' do
+  token = request.env["HTTP_ACCESS_TOKEN"]
+  begin
+    active_user = UserUtil::check_token token
+    user_id = params[:id]
+    user_list = UserUtil::get_following_user_list user_id
+    Api::Result.new(true, {followings: user_list}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: none
+get '/api/v1/users/:id/followings' do
+  token = request.env["HTTP_ACCESS_TOKEN"]
+  begin
+    active_user = UserUtil::check_token token
+    user_id = params[:id]
+    user_list = UserUtil::get_follower_user_list user_id
+    Api::Result.new(true, {followers: user_list}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: name, ingredients(array), ingredient_amounts(array), steps(array)
+post '/api/v1/recipes' do
+  token = request.env["HTTP_ACCESS_TOKEN"]
+  begin
+    user = UserUtil::check_token token
+    @json = JSON.parse request.body.read
+    recipe_name = @json["name"]
+    recipe_ingredients = @json["ingredients"]
+    recipe_ingredient_amounts = @json["ingredient_amounts"]
+    recipe_steps = @json["steps"]
+    recipe = RecipeUtil::create_new_recipe user.id, recipe_name, recipe_ingredients, recipe_ingredient_amounts, recipe_steps
+    Api::Result.new(true, {recipe: recipe.to_json_obj}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: none
+get '/api/v1/users/:id/recipes' do
+  token = request.env["HTTP_ACCESS_TOKEN"]
+  begin
+    active_user = UserUtil::check_token token
+    user_id = params[:id]
+    recipe_list = RecipeUtil::get_time_line user_id
+    Api::Result.new(true, {recipes: recipe_list}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: none
+get '/api/v1/homeline' do
+  token = request.env["HTTP_ACCESS_TOKEN"]
+  begin
+    active_user = UserUtil::check_token token
+    recipe_list = RecipeUtil::get_home_line active_user.id
+    Api::Result.new(true, {recipes: recipe_list}).to_json
+  rescue JWT::DecodeError
+    401
   end
 end

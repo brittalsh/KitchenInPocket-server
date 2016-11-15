@@ -1,5 +1,22 @@
 module UserUtil
 
+  class UserList
+    # ActiveRecord::Relation
+    attr_accessor :users_relation
+
+    def initialize users
+      @users_relation = users
+    end
+
+    def to_json_obj fields = nil
+      list = [];
+      @users_relation.each do |user_record|
+        list.push(user_record.to_json_obj fields)
+      end
+      list
+    end
+  end
+
   # Authenticate the username and password 
   # If match, return access_token
   def authenticate username, password
@@ -37,6 +54,31 @@ module UserUtil
     user.create_time = Time.now().to_i
     raise Error::SignUpError, user.errors.messages.values[0][0] unless user.save
     user
+  end
+
+  # find a user by id
+  def find_user_by_id user_id
+    user = User.find user_id
+  end
+
+  # change user password
+  def change_password user, old_password, new_password, new_password2
+    raise Error::ChangePasswdError, "Password authentication failed." if user.password != old_password
+    raise Error::ChangePasswdError, "Your two password input are different. Please type again." if new_password != new_password2
+    user.password = new_password
+    raise Error::ChangePasswdError, user.errors.messages.values[0][0] unless user.save
+  end
+
+  # return a list of json objects
+  def get_following_user_list user_id
+    users = UserList.new User.find(user_id).followings
+    users.to_json_obj
+  end
+
+  # return a list of json objects
+  def get_follower_user_list user_id
+    users = UserList.new User.find(user_id).followers
+    users.to_json_obj
   end
 
 end

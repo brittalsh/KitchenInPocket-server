@@ -1,0 +1,53 @@
+登陆
+post "/api/v1/users/login"
+no authentication
+intput parameter: username, password
+output: {resultCode: "success", resultMsg: {access_token: ""}}
+
+注册
+post "/api/v1/users"
+no authentication
+input parameter: username, password, password2
+output: {resultCode: "success", resultMsg: {access_token: ""}}
+
+更改密码
+put "/api/v1/users/changepassword"
+authentication required ( request header 加上 access_token )
+input parameter: old_password, new_password, new_password2
+output: {resultCode: "success", resultMsg: "Password Changed."}
+
+通过user_id 查询用户
+get "/api/v1/users/:id"
+authentication required ( request header 加上 access_token )
+input parameter: none
+output: {resultCode: "success", resultMsg: {user: {id: 1, name: "", create_time: 147528000, intro: ""}}}
+
+获取用户(id)的following用户列表
+get "/api/v1/users/:id/followings"
+authentication required
+intput parameter: none
+output: {resultCode: "success", resultMsg: {followings: [{id:1, name: "", create_time: 147528000, intro: ""}, {id:2, }, {id:3, }]}
+
+获取用户(id)的follower用户列表
+get "/api/v1/users/:id/followers"
+authentication required
+intput parameter: none
+output: {resultCode: "success", resultMsg: {followers: [{id:1, name: "", create_time: 147528000, intro: ""}, {id:2, }, {id:3, }]}
+
+添加菜单
+post "/api/v1/recipes"
+authentication required
+input parameter: name(string), ingredients(array of string), ingredient_amounts(array of string), steps(array of string)
+output: {resultCode: "success", resultMsg: {recipe: {name: "", id: 1, create_time: 147528000, user_id: 1}}}
+
+查询自己的菜单
+get "/api/v1/users/:id/recipes"
+authentication required
+input parameter: none
+output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1}, {}, {}]}}
+
+查询当前登陆用户的home time line
+get "/api/v1/homeline"
+authentication required
+input parameter: none
+output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1}, {}, {}]}}
