@@ -25,6 +25,7 @@ get '/' do
   redirect "test.html"
 end
 
+# no authentication
 post '/api/v1/users/login' do
   @json = JSON.parse request.body.read
   username = @json["username"]
@@ -37,7 +38,8 @@ post '/api/v1/users/login' do
   end
 end
 
-#no authentication
+# no authentication
+# parameters: {username: "", password: "", password2: ""}
 post '/api/v1/users' do
   @json = JSON.parse request.body.read
   begin
