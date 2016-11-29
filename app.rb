@@ -29,7 +29,9 @@ end
 
 # no authentication
 post '/api/v1/users/login' do
+  byebug
   @json = JSON.parse request.body.read
+  p @json
   username = @json["username"]
   password = @json["password"]
   begin
@@ -72,6 +74,7 @@ end
 put '/api/v1/users/changepassword' do
   begin
     @json = JSON.parse request.body.read
+    p @json
     token = @json["access_token"]
     old_password = @json["old_password"]
     new_password = @json["new_password"]
