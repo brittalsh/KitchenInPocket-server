@@ -3,9 +3,34 @@
 <head></head>
 <body>
   <h1>Hello world</h1>
-  <input type="file" id="fileinput"></input>
+
+  <!-- <form action="/api/v1/upload" enctype="multipart/form-data" method="POST"> -->
+    <input name="file" type="file" id="file"/>
+    <input type="submit" value="Upload" id="submit"/>
+  <!-- </form> -->
+
   <script src="js/jquery.min-2.1.4.js"></script>
   <script type="text/javascript">
+    $("#submit").click(function() {
+      var data = new FormData();
+      data.append("file", $("#file")[0].files[0]);
+      data.append("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE0ODA1NTczODd9.g12OcHtaFjrNYR-TLWAKoscc8WagknfFjccwi8L_Has");
+      $.ajax({
+        type: "POST",
+        url: "/api/v1/upload",
+        // contentType: "multipart/form-data",
+        // dataType: "json",
+        data: data,
+        contentType: false,
+        processData: false,
+        success: function(msg) {
+          console.log(msg);
+        },
+        error: function(msg) {
+          console.log("error: " + msg);
+        }
+      })
+    })
   </script>
 </body>
 </html>

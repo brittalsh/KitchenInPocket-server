@@ -29,7 +29,6 @@ end
 
 # no authentication
 post '/api/v1/users/login' do
-  byebug
   @json = JSON.parse request.body.read
   p @json
   username = @json["username"]
@@ -157,6 +156,25 @@ get '/api/v1/homeline' do
     active_user = UserUtil::check_token token
     recipe_list = RecipeUtil::get_home_line active_user.id
     Api::Result.new(true, {recipes: recipe_list}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+#authentication required
+post '/api/v1/upload' do
+  token = params[:access_token]
+  begin
+    byebug
+    active_user = UserUtil::check_token token
+    unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
+      byebug
+      return "No file selected"
+    end
+    byebug
+    puts "Uploading file, original name #{name.inspect}"
+    File.open("public/uploads/#{name}", "wb") { |file| file.write tmpfile.read}
+    "success"
   rescue JWT::DecodeError
     401
   end
