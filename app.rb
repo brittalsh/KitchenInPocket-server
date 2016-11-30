@@ -165,13 +165,10 @@ end
 post '/api/v1/upload' do
   token = params[:access_token]
   begin
-    byebug
     active_user = UserUtil::check_token token
     unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
-      byebug
       return "No file selected"
     end
-    byebug
     puts "Uploading file, original name #{name.inspect}"
     File.open("public/uploads/#{name}", "wb") { |file| file.write tmpfile.read}
     "success"
