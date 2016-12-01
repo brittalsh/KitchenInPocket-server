@@ -105,7 +105,7 @@ end
 
 # authentication required
 # parameters: none
-get '/api/v1/users/:id/followings' do
+get '/api/v1/users/:id/followers' do
   token = params[:access_token]
   begin
     active_user = UserUtil::check_token token
