@@ -145,7 +145,7 @@ post '/api/v2/recipes' do
   token = params[:access_token]
   begin
     user = UserUtil::check_token token
-    recipe = RecipeUtil::create_new_recipe2 user.id, params
+    recipe = RecipeUtil::create_new_recipe2 user.id, user.name, params
     Api::Result.new(true, {recipe: recipe.to_json_obj}).to_json
   rescue JWT::DecodeError
     401

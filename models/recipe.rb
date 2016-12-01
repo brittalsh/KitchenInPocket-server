@@ -12,7 +12,7 @@ class Recipe < ActiveRecord::Base
 
   def to_json_obj fields = nil
     obj = {}
-    default = ["id", "name", "user_id", "create_time", "picture"]
+    default = ["id", "name", "user_id", "user_name", "create_time", "picture"]
     fields ||= default
     fields.each do |key|
       obj.store(key, instance_eval("self.#{key}")) if default.include? key

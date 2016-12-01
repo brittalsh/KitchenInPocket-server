@@ -34,11 +34,12 @@ module RecipeUtil
   end
 
   # return a json obj
-  def create_new_recipe2 user_id, params
+  def create_new_recipe2 user_id, user_name, params
     recipe = Recipe.new
     recipe.name = params[:recipe_name]
     recipe.create_time = Time.now().to_i
     recipe.user_id = user_id
+    recipe.user_name = user_name
     recipe.picture = "uploads/user#{user_id}recipe#{recipe.create_time}.jpg"
     raise Error::CreateRecipeError, recipe.errors.messages.values[0][0] unless recipe.save
 
