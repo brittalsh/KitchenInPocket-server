@@ -3,6 +3,7 @@ class CreateTableRecipes < ActiveRecord::Migration
     create_table :recipes do |t|
       t.string :name, limit: 30, null: false
       t.integer :user_id, null: false
+      t.text :picture
       t.integer :create_time, limit: 8, null: false
     end
 

@@ -35,12 +35,14 @@ ActiveRecord::Schema.define(version: 20161103233151) do
   create_table "recipes", force: :cascade do |t|
     t.string  "name",        limit: 30, null: false
     t.integer "user_id",                null: false
+    t.text    "picture"
     t.integer "create_time", limit: 8,  null: false
   end
 
   create_table "steps", force: :cascade do |t|
     t.integer "recipe_id",             null: false
     t.integer "index",                 null: false
+    t.text    "picture"
     t.string  "content",   limit: 100, null: false
   end
 

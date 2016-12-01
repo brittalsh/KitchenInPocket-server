@@ -13,11 +13,19 @@
   <script type="text/javascript">
     $("#submit").click(function() {
       var data = new FormData();
-      data.append("file", $("#file")[0].files[0]);
+      file = $("#file")[0].files[0];
+      data.append("file", file);
       data.append("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE0ODA1NTczODd9.g12OcHtaFjrNYR-TLWAKoscc8WagknfFjccwi8L_Has");
+      data.append("recipe_name", "recipe1");
+      data.append("recipe_file", file);
+      data.append("ingredients", JSON.stringify([{name: "apple", amount: "11g"}, {name: "banana", amount: "12g"}]));
+      data.append("steps", 2);
+      data.append("steps_text", JSON.stringify(["cook apple", "cook banana"]));
+      data.append("steps_file1", file);
+      data.append("steps_file2", file);
       $.ajax({
         type: "POST",
-        url: "/api/v1/upload",
+        url: "/api/v2/recipes",
         // contentType: "multipart/form-data",
         // dataType: "json",
         data: data,
