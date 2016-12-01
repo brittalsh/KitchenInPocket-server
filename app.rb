@@ -34,8 +34,9 @@ post '/api/v1/users/login' do
   username = @json["username"]
   password = @json["password"]
   begin
-    token = UserUtil::authenticate username, password
-    Api::Result.new(true, {access_token: token}).to_json
+    user = UserUtil::authenticate username, password
+    token = UserUtil::generate_token user
+    Api::Result.new(true, {access_token: token, user_id: user.id}).to_json
   rescue Error::AuthError => e
     Api::Result.new(false, e.message).to_json
   end

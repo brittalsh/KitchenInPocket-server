@@ -26,7 +26,7 @@ module UserUtil
     elsif password != user.password
       raise Error::AuthError, "Password is not correct."
     else
-      generate_token user
+      user
     end
   end
 

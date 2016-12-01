@@ -2,7 +2,7 @@
 post "/api/v1/users/login"
 no authentication
 intput parameter: username, password
-output: {resultCode: "success", resultMsg: {access_token: ""}}
+output: {resultCode: "success", resultMsg: {access_token: "", user_id: 1}}
 
 注册
 post "/api/v1/users"
@@ -55,10 +55,10 @@ output {resultCode: "success", resultMsg: {recipe: {name: "", id: 1, create_time
 get "/api/v1/users/:id/recipes"
 authentication required
 input parameter: none
-output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1}, {}, {}]}}
+output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1, picture: "uploads/user1recipe15353235.jpg"}, {}, {}]}}
 
 查询当前登陆用户的home time line
 get "/api/v1/homeline"
 authentication required
 input parameter: none
-output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1}, {}, {}]}}
+output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1, picture: "uploads/user1recipe15353235.jpg"}, {}, {}]}}
