@@ -168,6 +168,23 @@ get '/api/v1/users/:id/recipes' do
 end
 
 # authentication required
+
+get '/api/v1/recipes/:id' do
+  token = params[:access_token]
+  begin
+    active_user = UserUtil::check_token token
+    recipe_id = params[:id]
+    recipe = RecipeUtil::get_recipe_by_id recipe_id
+    Api::Result.new(true, {recipe: recipe}).to_json
+  rescue JWT::DecodeError
+    401
+  rescue ActiveRecord::RecordNotFound
+    status 500
+    body "Record Not Found"
+  end
+end
+
+# authentication required
 # parameters: none
 get '/api/v1/homeline' do
   token = params[:access_token]

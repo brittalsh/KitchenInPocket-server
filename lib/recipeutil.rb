@@ -73,4 +73,9 @@ module RecipeUtil
     recipe_list = RecipeList.new Recipe.where(user_id: userid_list)
     recipe_list.to_json_obj
   end
+
+  def get_recipe_by_id recipe_id
+    recipe = Recipe.find recipe_id
+    recipe.to_json_obj
+  end
 end
