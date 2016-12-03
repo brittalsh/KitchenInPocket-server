@@ -13,4 +13,9 @@ module FavorUtil
     favor.destroy
   end
 
+  def get_favors user
+    recipe_list = []
+    user.favored_recipes.each { |recipe| recipe_list.push recipe.to_json_obj }
+    recipe_list
+  end
 end

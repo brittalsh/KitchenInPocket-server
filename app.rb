@@ -252,6 +252,19 @@ post '/api/v1/favors/delete' do
 end
 
 # authentication required
+get '/api/v1/favors' do
+  token = params[:access_token]
+  begin
+    active_user = UserUtil::check_token token
+    recipe_list = FavorUtil::get_favors active_user
+    Api::Result.new(true, {recipes: recipe_list}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+
+# authentication required
 # parameters: recipe_id
 # post '/api/v1/'
 

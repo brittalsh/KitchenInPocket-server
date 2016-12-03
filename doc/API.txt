@@ -126,3 +126,21 @@ input parameter: recipe_id
 output: {resultCode: "success", resultMsg: "Recipe has been unfavored."}
      or {resultCode: "error", resultMsg: "Cannot unfavor an unfavored tweet."}
 
+查询收藏的菜单
+get '/api/v1/favors'
+authentication required
+output: 
+{
+  resultCode: "success", 
+  reulstMsg: {
+    recipes: [
+    {
+      name: "", 
+      id: 2, 
+      create_time: 147528000, 
+      user_id: 1, 
+      user_name: "user1", 
+      picture: "uploads/user1recipe15353235.jpg"
+    }, {}]
+  }
+}
