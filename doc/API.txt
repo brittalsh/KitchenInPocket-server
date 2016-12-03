@@ -71,10 +71,7 @@ input parameter:
 {
   recipe_name: "",
   recipe_url: "",
-  ingredients: {
-    "name1": "amount1",
-    "name2": "amount2",
-  },
+  ingredients: [{name: "name1", amount: "amount1"}, {name: "name2", amount: "amount2"}],
   steps: ["step1", "step2", "step3", "step4"]
 }
 output parameter: 

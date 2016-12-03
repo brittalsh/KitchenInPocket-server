@@ -176,6 +176,21 @@ end
 
 
 # authentication required
+post '/api/v3/recipes' do
+  @json = JSON.parse request.body.read
+  p @json
+  begin
+    token = @json["access_token"]
+    user = UserUtil::check_token token
+    recipe = RecipeUtil::create_new_recipe3 user, @json
+    Api::Result.new(true, {recipe: recipe.to_json_obj}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+
+# authentication required
 # parameters: none
 get '/api/v1/users/:id/recipes' do
   token = params[:access_token]
@@ -269,23 +284,18 @@ get '/api/v1/favors' do
   end
 end
 
-
-# authentication required
-# parameters: recipe_id
-# post '/api/v1/'
-
 #authentication required
-post '/api/v1/file_upload' do
+post '/api/v1/recipe_picture' do
   token = params[:access_token]
   begin
     active_user = UserUtil::check_token token
     unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
-      return "No file selected"
+      return Api::Result.new(false, "No picture selected.").to_json
     end
-    puts "Uploading file, original name #{name.inspect}"
-    path = "public/uploads/#{name}"
+    url = "uploads/user#{active_user.id}recipe#{Time.now.to_i}.#{name.split('.')[1]}"
+    path = "public/#{url}"
     File.open(path, "wb") { |file| file.write tmpfile.read}
-    Api::Result.new(true, {url: path})
+    Api::Result.new(true, {url: url}).to_json
   rescue JWT::DecodeError
     401
   end

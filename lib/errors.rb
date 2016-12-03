@@ -6,4 +6,5 @@ module Error
   class ChangePasswdError < StandardError; end
   class FollowError < StandardError; end
   class FavorError < StandardError; end
+  class RecipeError < StandardError; end
 end

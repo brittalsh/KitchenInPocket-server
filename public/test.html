@@ -15,19 +15,11 @@
       var data = new FormData();
       file = $("#file")[0].files[0];
       data.append("file", file);
-      data.append("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE0ODA1NTczODd9.g12OcHtaFjrNYR-TLWAKoscc8WagknfFjccwi8L_Has");
-      data.append("recipe_name", "recipe1");
-      data.append("recipe_file", file);
-      data.append("ingredients", JSON.stringify([{name: "apple", amount: "11g"}, {name: "banana", amount: "12g"}]));
-      data.append("steps", 2);
-      data.append("steps_text", JSON.stringify(["cook apple", "cook banana"]));
-      data.append("steps_file1", file);
-      data.append("steps_file2", file);
+      data.append("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE0ODA4MTc3NDd9.YRcqUeQ_tk12kCa-Kgvx0_EJIg1XmA1HZIlrihwqg7Y");
       $.ajax({
         type: "POST",
-        url: "/api/v2/recipes",
-        // contentType: "multipart/form-data",
-        // dataType: "json",
+        url: "/api/v1/recipe_picture",
+        dataType: "json",
         data: data,
         contentType: false,
         processData: false,

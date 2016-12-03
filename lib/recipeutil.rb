@@ -17,7 +17,7 @@ module RecipeUtil
     end
   end
 
-  # return a json obj
+  # return a new record
   def create_new_recipe2 user_id, user_name, params
     recipe = Recipe.new
     recipe.name = params[:recipe_name]
@@ -47,6 +47,21 @@ module RecipeUtil
       end
       step.save
     end
+
+    recipe
+  end
+
+  # return a new record
+  def create_new_recipe3 user, params
+    recipe = Recipe.new(name: params["recipe_name"], create_time: Time.now.to_i, user_id: user.id, user_name: user.name)
+    recipe.picture = params["recipe_url"] if params["recipe_url"] != nil
+    raise Error::RecipeError, recipe.errors.messages.values[0][0] unless recipe.save
+
+    ingredients = params["ingredients"]
+    ingredients.each { |ingredient| Ingredient.create(name: ingredient["name"], amount: ingredient["amount"], recipe_id: recipe.id)}
+
+    steps = params["steps"]
+    steps.length.times { |i| Step.create(index: i+1, content: steps[i], recipe_id: recipe.id)}
 
     recipe
   end
