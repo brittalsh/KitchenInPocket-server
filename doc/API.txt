@@ -97,19 +97,28 @@ not finished
 
 查询菜单 by id
 get "/api/v1/recipes/:id"
+authentication required
+input: none
+output: {
+  resultCode: "success",
+  resultMsg: {
+    is_favored: true/false,
+    recipe: {...}
+  }
+}
 
 
-查询自己的菜单
+查询某个用户发布的所有菜单
 get "/api/v1/users/:id/recipes"
 authentication required
 input parameter: none
-output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1, user_name: "user1", picture: "uploads/user1recipe15353235.jpg"}, {}, {}]}}
+output: {resultCode: "success", resultMsg: {recipes:[{is_favored: false, name: "", id: 2, create_time: 147528000, user_id: 1, user_name: "user1", picture: "uploads/user1recipe15353235.jpg"}, {}, {}]}}
 
 查询当前登陆用户的home time line
 get "/api/v1/homeline"
 authentication required
 input parameter: none
-output: {resultCode: "success", resultMsg: {recipes:[{name: "", id: 2, create_time: 147528000, user_id: 1, user_name: "user1", picture: "uploads/user1recipe15353235.jpg"}, {}, {}]}}
+output: {resultCode: "success", resultMsg: {recipes:[{is_favored: false, name: "", id: 2, create_time: 147528000, user_id: 1, user_name: "user1", picture: "uploads/user1recipe15353235.jpg"}, {}, {}]}}
 
 收藏菜单
 post "/api/v1/favors" 

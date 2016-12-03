@@ -182,6 +182,7 @@ get '/api/v1/users/:id/recipes' do
     active_user = UserUtil::check_token token
     user_id = params[:id]
     recipe_list = RecipeUtil::get_time_line user_id
+    recipe_list = FavorUtil::mark_favor_on_recipes active_user.id, recipe_list
     Api::Result.new(true, {recipes: recipe_list}).to_json
   rescue JWT::DecodeError
     401
@@ -195,7 +196,8 @@ get '/api/v1/recipes/:id' do
     active_user = UserUtil::check_token token
     recipe_id = params[:id]
     recipe = RecipeUtil::get_recipe_by_id recipe_id
-    Api::Result.new(true, {recipe: recipe}).to_json
+    is_favored = FavorUtil::is_favor active_user.id, recipe_id
+    Api::Result.new(true, {recipe: recipe, is_favored: is_favored}).to_json
   rescue JWT::DecodeError
     401
   rescue ActiveRecord::RecordNotFound
@@ -211,6 +213,7 @@ get '/api/v1/homeline' do
   begin
     active_user = UserUtil::check_token token
     recipe_list = RecipeUtil::get_home_line active_user.id
+    recipe_list = FavorUtil::mark_favor_on_recipes active_user.id, recipe_list
     Api::Result.new(true, {recipes: recipe_list}).to_json
   rescue JWT::DecodeError
     401
