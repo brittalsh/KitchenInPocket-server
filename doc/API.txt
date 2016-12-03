@@ -90,7 +90,21 @@ output parameter:
 }
 
 上传recipe图片
-not finished 
+post '/api/v1/recipe_picture'
+require authentication
+formdata 
+input parameters: access_token, file
+output: {
+  resultCode: "success",
+  resultMSg: {
+    url: "uploads/xxxxxxx.xx" 
+  }
+}
+or
+{
+  resultCode: "error",
+  resultMSg: "No picture selected."
+} 
 
 查询菜单 by id
 get "/api/v1/recipes/:id"
