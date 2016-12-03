@@ -42,7 +42,7 @@ authentication required
 contentType: "application/json;charset=utf-8"
 input parameter: following_id  
 output: {resultCode: "success", resultMsg: "Relationship deleted."}
-     or {resultCode: "success", resultMsg: "no such relation."} ...
+     or {resultCode: "error", resultMsg: "no such relation."} ...
 
 
 获取用户(id)的follower用户列表
