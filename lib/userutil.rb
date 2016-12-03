@@ -93,4 +93,10 @@ module UserUtil
     raise Error::FollowError, "no such relationship" if follow == nil
     follow.destroy
   end
+
+  def is_following user_id, following_id
+    follow = Follow.find_by(follower_id: user_id, followed_id: following_id)
+    return true if follow != nil
+    false
+  end
 end

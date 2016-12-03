@@ -63,7 +63,8 @@ get "/api/v1/users/:id" do
   begin
     active_user = UserUtil::check_token token
     user = UserUtil::find_user_by_id user_id
-    Api::Result.new(true, {user: user.to_json_obj}).to_json
+    is_following = UserUtil::is_following active_user.id, user_id
+    Api::Result.new(true, {user: user.to_json_obj, is_following: is_following}).to_json
   rescue JWT::DecodeError
     401
   end
