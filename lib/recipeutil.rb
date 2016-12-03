@@ -17,22 +17,6 @@ module RecipeUtil
     end
   end
 
-  def create_new_recipe user_id, recipe_name, recipe_ingredients, recipe_ingredient_amounts, recipe_steps
-    recipe = Recipe.new
-    recipe.name = recipe_name
-    recipe.create_time = Time.now().to_i
-    recipe.user_id = user_id
-    raise Error::CreateRecipeError, recipe.errors.messages.values[0][0] unless recipe.save
-
-    recipe_ingredients.length.times do |i|
-      Ingredient.create(name: recipe_ingredients[i], recipe_id: recipe.id, amount: recipe_ingredient_amounts[i])
-    end
-
-    recipe_steps.length.times { |i| Step.create(recipe_id: recipe.id, index: i + 1, content: recipe_steps[i])}
-
-    recipe
-  end
-
   # return a json obj
   def create_new_recipe2 user_id, user_name, params
     recipe = Recipe.new

@@ -149,26 +149,8 @@ post '/api/v1/follows/delete' do
     user = UserUtil::check_token token
     UserUtil::delete_follow_relation user.id, following_id
     Api::Result.new(true, "Relationship deleted.").to_json
-  raise Error::FollowError => e
+  rescue Error::FollowError => e
     Api::Result.new(false, e.message).to_json
-  rescue JWT::DecodeError
-    401
-  end
-end
-
-# authentication required
-# parameters: name, ingredients(array), ingredient_amounts(array), steps(array)
-post '/api/v1/recipes' do
-  begin
-    @json = JSON.parse request.body.read
-    token = @json["access_token"]
-    recipe_name = @json["name"]
-    recipe_ingredients = @json["ingredients"]
-    recipe_ingredient_amounts = @json["ingredient_amounts"]
-    recipe_steps = @json["steps"]
-    user = UserUtil::check_token token
-    recipe = RecipeUtil::create_new_recipe user.id, recipe_name, recipe_ingredients, recipe_ingredient_amounts, recipe_steps
-    Api::Result.new(true, {recipe: recipe.to_json_obj}).to_json
   rescue JWT::DecodeError
     401
   end
