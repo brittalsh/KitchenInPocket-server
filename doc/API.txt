@@ -103,7 +103,15 @@ output: {
   resultCode: "success",
   resultMsg: {
     is_favored: true/false,
-    recipe: {...}
+    recipe: {...},
+    ingredients: [
+      {name: "apple", amount: "50g"},
+      {name: "mac", amount: "50g"},
+    ],
+    steps: [
+      "step1",
+      "step2",
+    ]
   }
 }
 

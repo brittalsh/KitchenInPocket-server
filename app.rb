@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'active_record'
+require 'algorithms'
 require 'jwt'
 require './config/environments'
 require './config/properties'
@@ -197,7 +198,9 @@ get '/api/v1/recipes/:id' do
     recipe_id = params[:id]
     recipe = RecipeUtil::get_recipe_by_id recipe_id
     is_favored = FavorUtil::is_favor active_user.id, recipe_id
-    Api::Result.new(true, {recipe: recipe, is_favored: is_favored}).to_json
+    ingredients = RecipeUtil::get_ingredients_by_recipeid recipe_id
+    steps = RecipeUtil::get_steps_by_recipeid recipe_id
+    Api::Result.new(true, {recipe: recipe, is_favored: is_favored, ingredients: ingredients, steps: steps}).to_json
   rescue JWT::DecodeError
     401
   rescue ActiveRecord::RecordNotFound

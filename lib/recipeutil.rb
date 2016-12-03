@@ -68,4 +68,24 @@ module RecipeUtil
     recipe = Recipe.find recipe_id
     recipe.to_json_obj
   end
+
+  def get_ingredients_by_recipeid recipe_id
+    ingredients = []
+    Ingredient.where(recipe_id: recipe_id).each do |ingredient|
+      ingredients.push ingredient.to_json_obj ["name", "amount"]
+    end
+    ingredients
+  end
+
+  def get_steps_by_recipeid recipe_id
+    q = Containers::PriorityQueue.new
+    Step.where(recipe_id: recipe_id).each do |step|
+      q.push step.content, 0-step.index.to_i
+    end
+    steps = []
+    while q.next != nil do
+      steps.push q.pop
+    end
+    steps
+  end
 end
