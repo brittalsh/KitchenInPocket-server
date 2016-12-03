@@ -81,4 +81,16 @@ module UserUtil
     users.to_json_obj
   end
 
+  def add_follow_relation user_id, following_id
+    follow = Follow.new
+    follow.follower_id = user_id
+    follow.followed_id = following_id
+    raise Error::FollowError, follow.errors.messages.values[0][0] unless follow.save
+  end
+
+  def delete_follow_relation user_id, following_id
+    follow = Follow.find_by(follower_id: user_id, followed_id: following_id)
+    raise Error::FollowError, "no such relationship" if follow == nil
+    follow.destroy
+  end
 end

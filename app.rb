@@ -112,6 +112,42 @@ get '/api/v1/users/:id/followers' do
     user_id = params[:id]
     user_list = UserUtil::get_follower_user_list user_id
     Api::Result.new(true, {followers: user_list}).to_json
+  rescue Error::FollowError 
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: following_id
+post '/api/v1/follows' do
+  @json = JSON.parse request.body.read
+  begin
+    token = @json["access_token"]
+    following_id = @json["following_id"].to_i
+    user = UserUtil::check_token token
+    UserUtil::add_follow_relation user.id, following_id
+    Api::Result.new(true, "New Relationship added.").to_json
+  rescue ActiveRecord::InvalidForeignKey
+    Api::Result.new(false, "There is no such user").to_json
+  rescue Error::FollowError => e
+    Api::Result.new(false, e.message).to_json
+  rescue JWT::DecodeError 
+    401
+  end
+end
+
+# authentication required
+delete '/api/v1/follows' do
+  @json = JSON.parse request.body.read
+  begin
+    token = @json["access_token"]
+    following_id = @json["following_id"].to_i
+    user = UserUtil::check_token token
+    UserUtil::delete_follow_relation user.id, following_id
+    Api::Result.new(true, "Relationship deleted.").to_json
+  raise Error::FollowError => e
+    Api::Result.new(false, e.message).to_json
   rescue JWT::DecodeError
     401
   end
