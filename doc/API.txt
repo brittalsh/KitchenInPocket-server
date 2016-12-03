@@ -12,15 +12,15 @@ output: {resultCode: "success", resultMsg: {access_token: ""}}
 
 更改密码
 put "/api/v1/users/changepassword"
-authentication required ( request header 加上 access_token )
+authentication required 
 input parameter: old_password, new_password, new_password2
 output: {resultCode: "success", resultMsg: "Password Changed."}
 
 通过user_id 查询用户
 get "/api/v1/users/:id"
-authentication required ( request header 加上 access_token )
+authentication required 
 input parameter: none
-output: {resultCode: "success", resultMsg: {user: {id: 1, name: "", create_time: 147528000, intro: ""}}}
+output: {resultCode: "success", resultMsg: {is_following: true/false, user: {id: 1, name: "", create_time: 147528000, intro: ""}}}
 
 获取用户(id)的following用户列表
 get "/api/v1/users/:id/followings"
