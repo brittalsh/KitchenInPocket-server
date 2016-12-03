@@ -5,5 +5,5 @@ module Error
   class UserUpdateError < StandardError; end
   class ChangePasswdError < StandardError; end
   class FollowError < StandardError; end
-
+  class FavorError < StandardError; end
 end

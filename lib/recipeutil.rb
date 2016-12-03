@@ -40,11 +40,13 @@ module RecipeUtil
     recipe.create_time = Time.now().to_i
     recipe.user_id = user_id
     recipe.user_name = user_name
-    recipe.picture = "uploads/user#{user_id}recipe#{recipe.create_time}.jpg"
+    recipe.picture = "uploads/user#{user_id}recipe#{recipe.create_time}.jpg" if params[:recipe_file] != nil
     raise Error::CreateRecipeError, recipe.errors.messages.values[0][0] unless recipe.save
 
     threads = []
-    threads << Thread.new { File.open("public/#{recipe.picture}", "wb") { |file| file.write params[:recipe_file][:tempfile].read } }
+    if params[:recipe_file] != nil
+      threads << Thread.new { File.open("public/#{recipe.picture}", "wb") { |file| file.write params[:recipe_file][:tempfile].read } }
+    end
 
     ingredients = JSON.parse params[:ingredients]
     ingredients.length.times do |i|
@@ -54,8 +56,12 @@ module RecipeUtil
     steps = params[:steps].to_i
     steps_text = JSON.parse params[:steps_text]
     steps.times do |i|
-      step = Step.create(recipe_id: recipe.id, index: i+1, content: steps_text[i], picture: "uploads/recipe#{recipe.id}step#{i+1}.jpg")
-      threads << Thread.new { File.open("public/#{step.picture}", "wb") { |file| file.write params["steps_file#{i+1}"][:tempfile].read } }
+      step = Step.new(recipe_id: recipe.id, index: i+1, content: steps_text[i])
+      if (params["steps_file#{i+1}"] != nil)
+        step.picture = "uploads/recipe#{recipe.id}step#{i+1}.jpg"
+        threads << Thread.new { File.open("public/#{step.picture}", "wb") { |file| file.write params["steps_file#{i+1}"][:tempfile].read } }
+      end
+      step.save
     end
 
     recipe

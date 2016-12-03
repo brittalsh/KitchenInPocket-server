@@ -15,6 +15,7 @@ require './lib/errors'
 require './lib/result'
 require './lib/userutil'
 require './lib/recipeutil'
+require './lib/favorutil'
 
 require 'byebug'
 
@@ -22,6 +23,7 @@ include Error
 include Api
 include UserUtil
 include RecipeUtil
+include FavorUtil
 
 get '/' do
   redirect "test.html"
@@ -139,7 +141,7 @@ post '/api/v1/follows' do
 end
 
 # authentication required
-delete '/api/v1/follows' do
+post '/api/v1/follows/delete' do
   @json = JSON.parse request.body.read
   begin
     token = @json["access_token"]
@@ -205,7 +207,6 @@ get '/api/v1/users/:id/recipes' do
 end
 
 # authentication required
-
 get '/api/v1/recipes/:id' do
   token = params[:access_token]
   begin
@@ -233,6 +234,44 @@ get '/api/v1/homeline' do
     401
   end
 end
+
+# authentication required
+post '/api/v1/favors' do
+  @json = JSON.parse request.body.read
+  begin
+    token = @json["access_token"]
+    user = UserUtil::check_token token
+    recipe_id = @json["recipe_id"]
+    FavorUtil::add_favor user.id, recipe_id
+    Api::Result.new(true, "Recipe added to favor list.").to_json
+  rescue ActiveRecord::InvalidForeignKey
+    Api::Result.new(false, "There is no such recipe").to_json
+  rescue Error::FavorError => e
+    Api::Result.new(false, e.message).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+post '/api/v1/favors/delete' do
+  @json = JSON.parse request.body.read
+  begin
+    token = @json["access_token"]
+    recipe_id = @json["recipe_id"]
+    user = UserUtil::check_token token
+    FavorUtil::delete_favor user.id, recipe_id
+    Api::Result.new(true, "Recipe has been unfavored.").to_json
+  rescue Error::FavorError => e
+    Api::Result.new(false, e.message).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: recipe_id
+# post '/api/v1/'
 
 #authentication required
 post '/api/v1/file_upload' do
