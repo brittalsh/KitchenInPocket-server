@@ -28,6 +28,23 @@ authentication required
 intput parameter: none
 output: {resultCode: "success", resultMsg: {followings: [{id:1, name: "", create_time: 147528000, intro: ""}, {id:2, }, {id:3, }]}
 
+添加一个follow用户
+post "/api/v1/follows"
+authentication required
+contentType: "application/json;charset=utf-8"
+input parameter: following_id
+output: {resultCode: "success", resultMsg: "New Relationship added."} 
+     or {resultCode: "error", resultMsg: "There is no such user"} ...
+
+删除一个follow用户
+delete "/api/v1/follows"
+authentication required
+contentType: "application/json;charset=utf-8"
+input parameter: following_id  
+output: {resultCode: "success", resultMsg: "Relationship deleted."}
+     or {resultCode: "success", resultMsg: "no such relation."} ...
+
+
 获取用户(id)的follower用户列表
 get "/api/v1/users/:id/followers"
 authentication required
