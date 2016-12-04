@@ -308,9 +308,7 @@ post '/api/v2/recipe_picture' do
   unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
     return Api::Result.new(false, "No picture selected.").to_json
   end
-  p tmpfile
-  url = "uploads/recipe#{Time.now.to_i}.#{name.split('.')[1]}"
-  path = "public/#{url}"
-  File.open(path, "wb") { |file| file.write tmpfile.read}
-  Api::Result.new(true, {url: "http://kitchen-in-pocket.herokuapp.com/#{url}"}).to_json
+  path = tmpfile.path
+  upload = Cloudinary::Uploader.upload(path, :public_id => "recipe#{Time.now.to_i}")
+  Api::Result.new(true, {url: upload["url"]}).to_json
 end
