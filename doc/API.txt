@@ -189,3 +189,25 @@ output:
     }, {}]
   }
 }
+
+按照recipe名关键字搜索recipe
+get '/api/v1/search_recipe' 
+authentication required
+input parameters: keyword
+output parameters: {
+  resultCode: "success",
+  resultMsg: {
+    recipes: [recipe, recipe, recipe]
+  }
+}
+
+获取推荐recipes
+get '/api/v1/recommend_recipes'
+no authentication
+input parameters: none
+output parameters: {
+  resultCode: "success",
+  resultMsg: {
+    recipes: [recipe, recipe, recipe]
+  }
+}

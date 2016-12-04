@@ -103,4 +103,16 @@ module RecipeUtil
     end
     steps
   end
+
+  def search_by_keyword keyword
+    recipe_list = []
+    Recipe.where("name LIKE '%#{keyword}%'").each { |recipe| recipe_list.push recipe.to_json_obj }
+    recipe_list
+  end
+
+  def recommend_recipes
+    recipe_list = []
+    Recipe.order(likes: :desc).limit(3).each { |recipe| recipe_list.push recipe.to_json_obj }
+    recipe_list
+  end
 end

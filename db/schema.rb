@@ -33,11 +33,12 @@ ActiveRecord::Schema.define(version: 20161103233151) do
   end
 
   create_table "recipes", force: :cascade do |t|
-    t.string  "name",        limit: 30, null: false
-    t.integer "user_id",                null: false
-    t.string  "user_name",   limit: 20, null: false
+    t.string  "name",        limit: 30,             null: false
+    t.integer "user_id",                            null: false
+    t.string  "user_name",   limit: 20,             null: false
     t.text    "picture"
-    t.integer "create_time", limit: 8,  null: false
+    t.integer "create_time", limit: 8,              null: false
+    t.integer "likes",                  default: 0, null: false
   end
 
   create_table "steps", force: :cascade do |t|

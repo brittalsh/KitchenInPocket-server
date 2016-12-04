@@ -240,6 +240,29 @@ get '/api/v1/homeline' do
 end
 
 # authentication required
+# parameters: keyword
+get '/api/v1/search_recipe' do
+  token = params[:access_token]
+  begin
+    keyword = params[:keyword]
+    active_user = UserUtil::check_token token
+    recipe_list = RecipeUtil::search_by_keyword keyword
+    recipe_list = FavorUtil::mark_favor_on_recipes active_user.id, recipe_list
+    Api::Result.new(true, {recipes: recipe_list}).to_json
+  rescue JWT::DecodeError
+    401
+  end
+end
+
+# authentication required
+# parameters: none
+get '/api/v1/recommend_recipes' do
+  recipe_list = RecipeUtil::recommend_recipes
+  Api::Result.new(true, {recipes: recipe_list}).to_json
+end
+
+
+# authentication required
 post '/api/v1/favors' do
   @json = JSON.parse request.body.read
   begin
@@ -303,6 +326,7 @@ post '/api/v1/recipe_picture' do
   end
 end
 
+# no authentication
 post '/api/v2/recipe_picture' do
   p request
   unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
