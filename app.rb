@@ -303,7 +303,7 @@ post '/api/v1/recipe_picture' do
 end
 
 post '/api/v2/recipe_picture' do
-  p params
+  p request
   unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
     return Api::Result.new(false, "No picture selected.").to_json
   end
