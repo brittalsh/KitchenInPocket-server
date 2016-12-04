@@ -2,6 +2,7 @@ require 'sinatra'
 require 'active_record'
 require 'algorithms'
 require 'jwt'
+require 'cloudinary'
 require './config/environments'
 require './config/properties'
 
@@ -307,6 +308,7 @@ post '/api/v2/recipe_picture' do
   unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
     return Api::Result.new(false, "No picture selected.").to_json
   end
+  p tmpfile
   url = "uploads/recipe#{Time.now.to_i}.#{name.split('.')[1]}"
   path = "public/#{url}"
   File.open(path, "wb") { |file| file.write tmpfile.read}
