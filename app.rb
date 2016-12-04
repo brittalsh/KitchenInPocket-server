@@ -287,6 +287,7 @@ end
 #authentication required
 post '/api/v1/recipe_picture' do
   token = params[:access_token]
+  p params
   begin
     active_user = UserUtil::check_token token
     unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
@@ -299,4 +300,15 @@ post '/api/v1/recipe_picture' do
   rescue JWT::DecodeError
     401
   end
+end
+
+post '/api/v2/recipe_picture' do
+  p params
+  unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
+    return Api::Result.new(false, "No picture selected.").to_json
+  end
+  url = "uploads/recipe#{Time.now.to_i}.#{name.split('.')[1]}"
+  path = "public/#{url}"
+  File.open(path, "wb") { |file| file.write tmpfile.read}
+  Api::Result.new(true, {url: "http://kitchen-in-pocket.herokuapp.com/#{url}"}).to_json
 end

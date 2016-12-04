@@ -15,10 +15,9 @@
       var data = new FormData();
       file = $("#file")[0].files[0];
       data.append("file", file);
-      data.append("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE0ODA4MTc3NDd9.YRcqUeQ_tk12kCa-Kgvx0_EJIg1XmA1HZIlrihwqg7Y");
       $.ajax({
         type: "POST",
-        url: "/api/v1/recipe_picture",
+        url: "/api/v2/recipe_picture",
         dataType: "json",
         data: data,
         contentType: false,
