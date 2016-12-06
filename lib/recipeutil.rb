@@ -106,7 +106,7 @@ module RecipeUtil
 
   def search_by_keyword keyword
     recipe_list = []
-    Recipe.where("name LIKE '%#{keyword}%'").each { |recipe| recipe_list.push recipe.to_json_obj }
+    Recipe.where("name ILIKE '%#{keyword}%'").each { |recipe| recipe_list.push recipe.to_json_obj }
     recipe_list
   end
 
